@@ -3,7 +3,7 @@ readonly CLONE_DIR="${CI_PROJECT_DIR:-$(pwd)}"
 readonly GIT_REFID="${CI_BUILD_REF:-HEAD}"
 readonly MIRROR_URI='http://dl-cdn.alpinelinux.org/alpine/edge'
 readonly PACKAGER_PRIVATE_KEY_NAME="mark@klowner.com-57a9ef6f.rsa"
-readonly PACAKGER_PUBLIC_KEY_NAME="$PACKAGER_PRIVATE_KEY_NAME.pub"
+readonly PACKAGER_PUBLIC_KEY_NAME="$PACKAGER_PRIVATE_KEY_NAME.pub"
 
 export PACKAGE_DIR=${CI_PROJECT_DIR:-$PWD}/packages
 

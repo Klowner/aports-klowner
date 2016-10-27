@@ -2,6 +2,9 @@
 
 . "$(dirname "$0")"/common.sh
 
+# Store the Alpine public key on disk as a trusted key
+echo -e "$ABUILD_PUBLIC_KEY" > /etc/apk/keys/$PACKAGER_PUBLIC_KEY_NAME
+
 # Add a regular user for building
 adduser -G users -s /bin/sh -D $ALPINE_USER
 addgroup $ALPINE_USER abuild
@@ -24,8 +27,6 @@ chmod 700 /etc/pkey/$PACKAGER_PRIVATE_KEY_NAME
 
 echo -e "PACKAGER_PRIVKEY=/etc/pkey/$PACKAGER_PRIVATE_KEY_NAME\n" >> /etc/abuild.conf
 
-# Store the Alpine public key on disk as a trusted key
-echo -e "$ABUILD_PUBLIC_KEY" > /etc/apk/keys/$PACKAGER_PUBLIC_KEY_NAME
 echo -e "REPODEST=$CLONE_DIR/packages\n" >> /etc/abuild.conf
 mkdir -p "$CLONE_DIR/packages"
 chown -R $ALPINE_USER:users $CLONE_DIR/packages
