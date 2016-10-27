@@ -2,7 +2,7 @@
 # Maintainer: Mark Riedesel <mark@klowner.com>
 pkgname=blender
 pkgver=2.77a
-pkgrel=0
+pkgrel=1
 pkgdesc="3D Creation/Animation/Publishing System"
 url="http://www.blender.org/"
 arch="all"
