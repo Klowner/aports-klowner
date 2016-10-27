@@ -1,0 +1,77 @@
+#!/bin/sh
+# vim: set ts=4:
+
+set -eu
+
+. "$(dirname "$0")"/common.sh
+
+echo "ssh auth sock $SSH_AUTH_SOCK"
+
+# Prints names of changed directories (i.e. repositories) that have been changed
+# or created in the specified revisions.
+changed_repos() {
+	local commit_ish="$1"
+	local repos="$(find * -type d -maxdepth 0 ! -name '.*')"
+
+	# Print names of dirs in the current directory
+	git diff-tree --name-only "$commit_ish" -- $repos
+}
+
+changed_abuilds() {
+	local repo="$1"
+	local commit_ish="$2"
+
+	# Get names of repo's subdirs with modified APKBUILD but ignore deleted ones
+	local aports="$(git diff-tree -r --relative="$repo" --name-only --diff-filter=ACMR \
+					--no-commit-id "$commit_ish" -- '*APKBUILD' | xargs -I% dirname % | xargs)"
+
+	# Sort abuilds by build order
+	ap builddirs -d "$(pwd)/$repo" $aports 2>/dev/null | xargs -I% basename %
+}
+
+set_repositories_for() {
+	local target_repo="$1"
+	local repos=''
+
+	local repo; for repo in main community testing; do
+		repos="$repos $MIRROR_URI/$repo"
+		[ "$repo" = "$target_repo" ] && break
+	done
+
+	sh -c "printf '%s\n' $repos > /etc/apk/repositories"
+	apk update
+}
+
+cd "$CLONE_DIR"
+
+failed_packages=''
+successful_packages=''
+
+for repo in $(changed_repos "$GIT_REFID"); do
+	set_repositories_for "$repo"
+
+	for pkgname in $(changed_abuilds "$repo" "$GIT_REFID"); do
+		qname="$repo/$pkgname"
+
+		print -s1 -c3 "building $qname\n..."
+
+		cd $qname
+		if su $ALPINE_USER -c 'abuild -r -P $PACKAGE_DIR'; then
+			su $ALPINE_USER -c 'checkapk' || :
+			successful_packages="$successful_packages $qname"
+		else
+			failed_packages="$failed_packages $qname"
+		fi
+
+		cd - >/dev/null
+	done
+done
+
+if [ -n "$successful_packages" ]; then
+	print -s1 -c2 "Successfully built packages:$successful_packages\n"
+fi
+if [ -n "$failed_packages" ]; then
+	die "Failed to build packages:$failed_packages"
+elif [ -z "$successful_packages" ]; then
+	print -s1 -c3 'No packages found to be built.'
+fi

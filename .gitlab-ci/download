@@ -1,0 +1,23 @@
+#!/bin/sh
+# vim: set ts=4:
+
+set -eu
+
+. "$(dirname "$0")"/common.sh
+
+readonly REPO_DIR=$CLONE_DIR/packages
+
+download() {
+	local repo_dir="$1"
+	local rsync_src="$2"
+	local working_dir=$(pwd)
+
+	which rsync || apk add rsync
+	cd $repo_dir && rsync -avr -e ssh --delete-after $rsync_src ./
+	chown -R $ALPINE_USER:users ./
+	cd $working_dir
+}
+
+print -s1 -c3 "Synchronizing repository with local cache $RSYNC_DESTINATION\n"
+download $REPO_DIR $RSYNC_DESTINATION
+print -s1 -c3 "Done\n"

@@ -1,0 +1,25 @@
+#!/bin/sh
+# vim: set ts=4:
+
+set -eu
+
+. "$(dirname "$0")"/common.sh
+
+readonly REPO_DIR=$CLONE_DIR/packages
+
+upload() {
+	local repo_dir="$1"
+	local rsync_dest="$2"
+
+	which rsync || apk add rsync
+	cd $repo_dir && rsync -avr -e ssh --delete-after ./ $rsync_dest
+}
+
+if [ -n $(ls -A $REPO_DIR) ]; then
+	print -s1 -c3 "Beginning rsync to $RSYNC_DESTINATION\n"
+	upload $REPO_DIR $RSYNC_DESTINATION
+	print -s1 -c3 "Done\n"
+else
+	print -s1 -c2 "No packages exist. Skipping rsync\n"
+fi
+

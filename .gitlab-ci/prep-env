@@ -1,0 +1,37 @@
+#!/bin/sh
+
+. "$(dirname "$0")"/common.sh
+
+# Add a regular user for building
+adduser -G users -s /bin/sh -D $ALPINE_USER
+addgroup $ALPINE_USER abuild
+addgroup $ALPINE_USER wheel
+
+# Install alpine sdk
+apk update && \
+  apk add \
+    alpine-sdk \
+    git \
+    lua-aports \
+    openssh-client \
+    rsync
+
+# Store the Alpine signing private key on disk
+mkdir /etc/pkey
+echo -e "$ABUILD_PRIVATE_KEY" > /etc/pkey/$PACKAGER_PRIVATE_KEY_NAME
+chown $ALPINE_USER:users /etc/pkey/$PACKAGER_PRIVATE_KEY_NAME
+chmod 700 /etc/pkey/$PACKAGER_PRIVATE_KEY_NAME
+
+echo -e "PACKAGER_PRIVKEY=/etc/pkey/$PACKAGER_PRIVATE_KEY_NAME\n" >> /etc/abuild.conf
+
+# Store the Alpine public key on disk as a trusted key
+echo -e "$ABUILD_PUBLIC_KEY" > /etc/apk/keys/$PACKAGER_PUBLIC_KEY_NAME
+echo -e "REPODEST=$CLONE_DIR/packages\n" >> /etc/abuild.conf
+mkdir -p "$CLONE_DIR/packages"
+chown -R $ALPINE_USER:users $CLONE_DIR/packages
+
+for repo in *; do
+  if [ $repo != "scripts" ]; then
+    echo -e "$CLONE_DIR/packages/$repo" >> /etc/apk/repositories
+  fi
+done
