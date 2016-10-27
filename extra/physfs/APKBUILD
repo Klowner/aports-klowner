@@ -1,0 +1,39 @@
+# Contributor: Mark Riedesel <mark@klowner.com>
+# Maintainer: Mark Riedesel <mark@klowner.com>
+pkgname=physfs
+pkgver=2.0.3
+pkgrel=0
+pkgdesc="A library to provide abstract access to various archives"
+url="http://icculus.org/physfs"
+arch="all"
+license="ZLIB"
+depends="zlib"
+makedepends="cmake doxygen"
+install=""
+subpackages="$pkgname-dev $pkgname-doc"
+source="https://icculus.org/physfs/downloads/${pkgname}-${pkgver}.tar.bz2"
+builddir="$srcdir/${pkgname}-${pkgver}"
+
+build() {
+	cd "$builddir"
+	mkdir "$builddir"/build
+	cd "$builddir"/build
+	cmake .. \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DPHYSFS_BUILD_TEST=False \
+		-DPHYSFS_BUILD_WX_TEST=False \
+		|| return 1
+	make all docs || return 1
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install || return 1
+	install -d "${pkgdir}"/usr/share/man/man3
+	install -m644 docs/man/man3/* "$pkgdir"/usr/share/man/man3
+}
+
+md5sums="c2c727a8a8deb623b521b52d0080f613  physfs-2.0.3.tar.bz2"
+sha256sums="ca862097c0fb451f2cacd286194d071289342c107b6fe69079c079883ff66b69  physfs-2.0.3.tar.bz2"
+sha512sums="47eff0c81b8dc3bb526766b0a8ad2437d2951867880116d6e6e8f2ec1490e263541fb741867fed6517cc3fa8a9c5651b36e3e02a499f19cfdc5c7261c9707e80  physfs-2.0.3.tar.bz2"
