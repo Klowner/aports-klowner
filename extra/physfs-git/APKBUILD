@@ -1,0 +1,55 @@
+# Contributor: Mark Riedesel <mark@klowner.com>
+# Maintainer: Mark Riedesel <mark@klowner.com>
+pkgname=physfs
+
+_giturl="https://git.klowner.com/mirrors/$pkgname.git"
+_gittag=HEAD
+
+pkgver=2.0.3
+pkgrel=0
+[ -z "${_gitcommit}" ] && _suffix="_src" || _suffix="-${_gitcommit}"
+
+pkgdesc="A library to provide abstract access to various archives (git version)"
+url="http://icculus.org/physfs"
+arch="all"
+license="ZLIB"
+depends="zlib"
+makedepends="cmake doxygen"
+install=""
+subpackages="$pkgname-dev $pkgname-doc"
+source="https://icculus.org/physfs/downloads/${pkgname}-${pkgver}.tar.bz2"
+builddir="$srcdir/${pkgname}-${pkgver}"
+
+snapshot() {
+	mkdir -p "$srcdir"
+	cd "${SRCDEST:-$srcdir}"
+	if ! [ -d $pkgname.git ]; then
+		git clone --bare $_giturl || return 1
+		cd $pkgname.git
+	else
+		cd $pkgname.git
+		git fetch || return 1
+	fi
+	git archive --prefix=$pkgname-$pkgver/ -o "$SRCDEST"/${pkgname}-${pkgver}${_suffix}.tar.gz $_gittag
+}
+
+
+build() {
+	cd "$builddir"
+	mkdir "$builddir"/build
+	cd "$builddir"/build
+	cmake .. \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DPHYSFS_BUILD_TEST=False \
+		-DPHYSFS_BUILD_WX_TEST=False \
+		|| return 1
+	make all docs || return 1
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install || return 1
+	install -d "${pkgdir}"/usr/share/man/man3
+	install -m644 docs/man/man3/* "$pkgdir"/usr/share/man/man3
+}
