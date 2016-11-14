@@ -2,11 +2,11 @@
 # Maintainer: Mark Riedesel <mark@klowner.com>
 pkgbase=vulkan
 pkgname=$pkgbase-headers
-pkgver=1.0.29
+pkgver=1.0.20161025
 pkgrel=0
 pkgdesc="Vulkan development headers"
 _pkgname="Vulkan-Docs"
-_pkgver="1.0-core-20160930"
+_pkgver="v1.0-core-${pkgver##*.}"
 url="https://www.khronos.org/vulkan/"
 arch="noarch"
 license="custom"
@@ -14,7 +14,7 @@ depends=""
 makedepends="asciidoc python3"
 install=""
 subpackages="$pkgbase-doc $pkgbase-html-doc:_htmldoc"
-source="https://github.com/KhronosGroup/${_pkgname}/archive/v${_pkgver}.tar.gz"
+source="https://github.com/KhronosGroup/Vulkan-Docs/archive/${_pkgver}.tar.gz"
 builddir="$srcdir/"$_pkgname-$_pkgver
 
 build() {
