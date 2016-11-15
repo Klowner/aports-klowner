@@ -6,7 +6,7 @@ pkgver=1.0.20161025
 pkgrel=0
 pkgdesc="Vulkan development headers"
 _pkgname="Vulkan-Docs"
-_pkgver="v1.0-core-${pkgver##*.}"
+_pkgver="1.0-core-${pkgver##*.}"
 url="https://www.khronos.org/vulkan/"
 arch="noarch"
 license="custom"
@@ -14,7 +14,7 @@ depends=""
 makedepends="asciidoc python3"
 install=""
 subpackages="$pkgbase-doc $pkgbase-html-doc:_htmldoc"
-source="https://github.com/KhronosGroup/Vulkan-Docs/archive/${_pkgver}.tar.gz"
+source="https://github.com/KhronosGroup/Vulkan-Docs/archive/v${_pkgver}.tar.gz"
 builddir="$srcdir/"$_pkgname-$_pkgver
 
 build() {
@@ -60,6 +60,6 @@ doc() {
 	mv out/1.0/man/3/*.3.gz "$subpkgdir"/usr/share/man/man3/
 }
 
-md5sums="3f9370c61eadfb28895f0884c94eada7  v1.0-core-20160930.tar.gz"
-sha256sums="ed11905907912f24973ec81e8d9e9c2c7f437a18f3bc701f193f23ca60dfea86  v1.0-core-20160930.tar.gz"
-sha512sums="5b856dd08679e33aae20b019989d0927ca394c172f2d34b0e0defe9f1cc56d841803f16588315c52e51f36970859e986f677f85b22b3b128cb2f5b41d26c32cc  v1.0-core-20160930.tar.gz"
+md5sums="7228e1a65d5076999a18f2448525db01  v1.0-core-20161025.tar.gz"
+sha256sums="b00cb74bb4efece048072faebb63f5374e68c8494c45de7d7df2d9d74af43134  v1.0-core-20161025.tar.gz"
+sha512sums="0aadfd651dfb3ce6a90d3541a05923da04fa461b3a1c6e9d3de27bf42afd2dde4f9ac2f2a0520cd4d3fa611ef3ffeed97bb288c74f88a9bc3c98057140138a74  v1.0-core-20161025.tar.gz"
