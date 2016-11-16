@@ -1,7 +1,7 @@
 # Contributor: Mark Riedesel <mark@klowner.com>
 # Maintainer: Mark Riedesel <mark@klowner.com>
 pkgname=opensubdiv
-pkgver=3.0.5
+pkgver=3.1.0
 pkgrel=0
 pkgdesc="An Open-Source subdivision surface library"
 url="http://graphics.pixar.com/opensubdiv"
@@ -46,6 +46,6 @@ tools() {
 	mv "$pkgdir"/usr/bin "$subpkgdir"/usr/
 }
 
-md5sums="f16fa309b3fa3d400e6dcbf59d316dfe  opensubdiv-3.0.5.tar.gz"
-sha256sums="60bb7d709adfd949ff865864b68ff3b7e97a682a1841ccc70cd60a6c5a28ff30  opensubdiv-3.0.5.tar.gz"
-sha512sums="cee4c13fd0ef0a8dac6f880bdda8b6eed1ac3c17f7eadbd5f00bb8fe0140ca12a244b7e51edc98186af0551a26ac88e402651837f3f49195d3a9697437b86bf8  opensubdiv-3.0.5.tar.gz"
+md5sums="5a5357dff420035ff60f0a7b1e6cbe07  opensubdiv-3.1.0.tar.gz"
+sha256sums="ff3f2cdeeaa8ac4abe83394b1fea27ea3ade8258aff86da5fdfba37415485aba  opensubdiv-3.1.0.tar.gz"
+sha512sums="9b59cb4e5b124e222b67a48986251cff91bcdc2aee9f71c4b653ad7bb089e860c5954c251a91c0004fa5c28fc4524a0dcbf51d3ae51ea86ee7665ba05d8ec97f  opensubdiv-3.1.0.tar.gz"
