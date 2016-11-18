@@ -1,8 +1,8 @@
 # Contributor: Mark Riedesel <mark@klowner.com>
 # Maintainer: Mark Riedesel <mark@klowner.com>
 pkgname=blender
-pkgver=2.77a
-pkgrel=1
+pkgver=2.78a
+pkgrel=0
 pkgdesc="3D Creation/Animation/Publishing System"
 url="http://www.blender.org/"
 arch="all"
@@ -15,7 +15,7 @@ makedepends="cmake libx11-dev jpeg-dev zlib-dev libpng-dev freetype-dev python3-
 install=""
 subpackages="$pkgname-doc $pkgname-shared $pkgname-headless $pkgname-player py3-$pkgname:python"
 source="http://download.blender.org/source/${pkgname}-${pkgver}.tar.gz
-	blender-2.77a-musl.patch"
+	blender-2.78a-musl.patch"
 
 builddir="$srcdir"/$pkgname-$pkgver
 
@@ -114,9 +114,9 @@ python() {
 	ln -s /usr/share/blender/${VERSION} "$subpkgdir"/usr/lib/python${PY_VERSION}/site-packages/${VERSION}
 }
 
-md5sums="bb192274fe5957ce62bce9f0557ea4b4  blender-2.77a.tar.gz
-93bda85f6a3c0c587ee7790b7d35e4cc  blender-2.77a-musl.patch"
-sha256sums="3770fa00f50a6654eb8b5fe625ca8942ab5672ac4685b7af24597251ace85c67  blender-2.77a.tar.gz
-f536a69354bd1a4b482a6150542d528a92a0107ff639832500f7dc28c64360ec  blender-2.77a-musl.patch"
-sha512sums="4f8223a3786b80fa613ace27bea9349309b5857bcc1fafdb7d769f6192d5cb455ce4faf60920d7a1c2cb82ef8c40a10b25a760748b305c16c550657cf1e4df93  blender-2.77a.tar.gz
-6ecf4a6a9b56f045c9d14093ae13c6cb714ce8dff2212a08830edcf540ec47f143c2670e197a97ca42f380a60825abab4e7b3d7dbc88c44265fae7f83f2cd602  blender-2.77a-musl.patch"
+md5sums="8f75b9d7c8507c563bda882c4f73c2d2  blender-2.78a.tar.gz
+b1bc26785e402b0d65987a6c121d6fbf  blender-2.78a-musl.patch"
+sha256sums="014a14b1ba00c0e651f106469b2e5dd444f11be5a7af48056f0ed59de90cceaf  blender-2.78a.tar.gz
+3063c537fd2255f003b511ad2ead357d7f387d0b9d20e3dd2a44e9868f124fa3  blender-2.78a-musl.patch"
+sha512sums="57239b6ce473aaef114453f97a6e88535ec0a2f50cfecd221fa6bdcca6fe6559dcbefd48c3f20dc2235c195de13c59a1a155d5b64d777be31812d32e68be9370  blender-2.78a.tar.gz
+1d555354b9144d2372cceff70219cce441569777648f59bbe4b243017117befed319468340eb874b884ed24dbd3e23e2ca09d0fbbec22be18d91eb48bd2b73dd  blender-2.78a-musl.patch"
