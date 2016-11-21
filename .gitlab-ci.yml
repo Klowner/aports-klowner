@@ -29,10 +29,10 @@ build_and_deploy:
     - '.gitlab-ci/download'
     - '.gitlab-ci/build-pkgs'
     - '.gitlab-ci/upload'
-  cache:
-    key: "$CI_BUILD_REF_NAME"
-    paths:
-      - packages/
+  #cache:
+    #key: "$CI_BUILD_REF_NAME"
+    #paths:
+      #- packages/
 
 test_build:
   stage: build
