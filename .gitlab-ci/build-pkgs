@@ -63,7 +63,7 @@ for repo in $(changed_repos "$GIT_REFID"); do
 			failed_packages="$failed_packages $qname"
 		fi
 
-		su $ALPINE_SUER -c 'abuild cleanoldpkg -P $PACKAGE_DIR'
+		su $ALPINE_USER -c 'abuild cleanoldpkg -P $PACKAGE_DIR'
 
 		cd - >/dev/null
 	done
