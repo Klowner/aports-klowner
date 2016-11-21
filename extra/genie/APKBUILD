@@ -1,7 +1,6 @@
 # Maintainer: Mark Riedesel <mark@klowner.com>
-
 _basename=GENie
-pkgname=genie-git
+pkgname=genie
 pkgver=0.726.20161121
 pkgrel=0
 pkgdesc="GENie project generator tool (a fork of premake)"
@@ -12,13 +11,11 @@ makedepends="git make gcc"
 builddir="$srcdir"/$_basename-$pkgver
 source="http://alpine.klowner.com/archive/GENie-0.726.20161121.tar.gz"
 builddir="$srcdir/"GENie-$pkgver
-
 gitrepo=GENie
 giturl="https://github.com/bkaradzic/$_basename.git"
 gittag=HEAD
 snapshot_dest=${SNAPSHOT_DEST}
 
-echo $pkgname
 gitversion() {
 	printf '0.%s.%s' "$(awk '$1 == "version" {print $2}' ${SRCDEST}/$gitrepo/README.md)" "$(date +%Y%m%d)"
 }
