@@ -1,0 +1,83 @@
+# Maintainer: Mark Riedesel <mark@klowner.com>
+
+_basename=GENie
+pkgname=genie-git
+pkgver=0.726.20161121
+pkgrel=0
+pkgdesc="GENie project generator tool (a fork of premake)"
+url="https://github.com/bkaradzic/GENie"
+arch="all"
+license="MIT"
+makedepends="git make gcc"
+builddir="$srcdir"/$_basename-$pkgver
+source="http://alpine.klowner.com/archive/GENie-0.726.20161121.tar.gz"
+builddir="$srcdir/"GENie-$pkgver
+
+gitrepo=GENie
+giturl="https://github.com/bkaradzic/$_basename.git"
+gittag=HEAD
+snapshot_dest=${SNAPSHOT_DEST}
+
+echo $pkgname
+gitversion() {
+	printf '0.%s.%s' "$(awk '$1 == "version" {print $2}' ${SRCDEST}/$gitrepo/README.md)" "$(date +%Y%m%d)"
+}
+
+bump() {
+	local apkbuild=${PWD}/APKBUILD
+	mkdir -p "$srcdir"
+	cd "${SRCDEST:-$srcdir}"
+
+	if ! [ -d "$gitrepo" ]; then
+		git clone $giturl || return 1
+	else
+		git --git-dir=$gitrepo/.git fetch || return 1
+	fi
+
+	local newversion=$(gitversion)
+
+	echo $newversion
+	# update version in file
+	sed -i "s/^pkgver=.*$/pkgver=${newversion}/g" $apkbuild
+
+	# update source path in file
+	sed -i "s/GENie-.*\.tar\.gz/GENie-${newversion}\.tar\.gz/g" $apkbuild
+}
+
+snapshot() {
+	if [ -z $snapshot_dest ]; then
+		msg "Please set SNAPSHOT_DEST for snapshot tarball destination"
+		exit 1
+	fi
+
+	mkdir -p "$srcdir"
+	cd "${SRCDEST:-$srcdir}"
+
+	if ! [ -d "$gitrepo" ]; then
+		git clone $giturl || return 1
+	else
+		git --git-dir=$gitrepo/.git fetch || return 1
+	fi
+
+	local _tarball=$_basename-$(gitversion).tar.gz
+	local _prefix=$_basename-$(gitversion)
+	git --git-dir=$gitrepo/.git archive --prefix=${_prefix}/ \
+		-o "$SRCDEST"/$_tarball $gittag || return 1
+	scp "$SRCDEST"/$_tarball $SNAPSHOT_DEST
+}
+
+build() {
+	cd "$builddir"
+	make || return 1
+	bin/linux/genie release || return 1
+	make || return 1
+}
+
+package() {
+	cd "$builddir"
+	install -D -m755 "bin/linux/genie" "$pkgdir"/usr/bin/genie
+}
+
+md5sums="3b020876af8c505e5cceaf7a9ddc903b  GENie-0.726.20161121.tar.gz"
+sha256sums="3fdf543eaa900a4d7b9bf664b28ee2752a95f47f57de387aa95de5f9834a3cd7  GENie-0.726.20161121.tar.gz"
+sha512sums="aa9d4133622dc415cbd3b05395c91a43e53c8197c5656004756c45735fd69edd8580ffc4e93d35edb8be7c84deff49c6642677e73b08b486adac9fc70114e667  GENie-0.726.20161121.tar.gz"
