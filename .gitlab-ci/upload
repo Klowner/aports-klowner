@@ -12,6 +12,12 @@ upload() {
 	local rsync_dest="$2"
 
 	which rsync || apk add rsync
+
+	if ! [ -d /cache/packages ]; then
+		mkdir -p /cache/packages
+	fi
+	rsync -avr ./ /cache/packages/
+
 	cd $repo_dir && rsync -avr -e ssh --exclude archive --delete-after ./ $rsync_dest
 }
 
