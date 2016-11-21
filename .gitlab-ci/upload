@@ -16,9 +16,10 @@ upload() {
 	if ! [ -d /cache/packages ]; then
 		mkdir -p /cache/packages
 	fi
-	rsync -avr ./ /cache/packages/
 
-	cd $repo_dir && rsync -avr -e ssh --exclude archive --delete-after ./ $rsync_dest
+	cd $repo_dir && \
+		rsync -avr ./ /cache/packages/ &&
+		rsync -avr -e ssh --exclude archive --delete-after ./ $rsync_dest
 }
 
 if [ -n $(ls -A $REPO_DIR) ]; then

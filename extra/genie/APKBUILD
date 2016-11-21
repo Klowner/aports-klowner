@@ -2,7 +2,7 @@
 _basename=GENie
 pkgname=genie
 pkgver=0.726.20161121
-pkgrel=1
+pkgrel=0
 pkgdesc="GENie project generator tool (a fork of premake)"
 url="https://github.com/bkaradzic/GENie"
 arch="all"
