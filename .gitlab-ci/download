@@ -13,7 +13,7 @@ download() {
 	local working_dir=$(pwd)
 
 	which rsync || apk add rsync
-	cd $repo_dir && rsync -avr -e ssh --delete-after $rsync_src ./
+	cd $repo_dir && rsync -avr -e ssh --exclude 'archive' --delete-after $rsync_src ./
 	chown -R $ALPINE_USER:users ./
 	cd $working_dir
 }
