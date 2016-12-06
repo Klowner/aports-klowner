@@ -1,0 +1,42 @@
+# Contributor: Mark Riedesel <mark@klowner.com>
+# Maintainer: Mark Riedesel <mark@klowner.com>
+pkgname=openal-soft
+pkgver=1.17.2
+pkgrel=0
+pkgdesc="Cross-platform 3D audio library, software implementation"
+arch="all"
+url="http://kcat.strangesoft.net/openal.html"
+license="LGPL"
+makedepends="cmake pulseaudio-dev ffmpeg-dev linux-headers"
+subpackages="$pkgname-dev $pkgname-examples"
+source="https://github.com/kcat/openal-soft/archive/$pkgname-$pkgver.tar.gz"
+builddir="$srcdir/"$pkgname-$pkgname-$pkgver
+
+
+build() {
+	cd "$builddir"
+	echo $builddir
+	mkdir -p build
+	cd build
+	cmake .. \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		|| return 1
+	make || return 1
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install
+}
+
+examples() {
+	mkdir -p "$subpkgdir"/usr
+	mv "$pkgdir"/usr/bin "$subpkgdir"/usr/
+	mv "$pkgdir"/usr/share "$subpkgdir"/usr/
+}
+
+
+md5sums="8b23942c4e9a2fc3485b00fd06b0ddd5  openal-soft-1.17.2.tar.gz"
+sha256sums="11ea176f6cbf9763dbce0953dd77ab72d032b4ad95f07afffb91844abb174033  openal-soft-1.17.2.tar.gz"
+sha512sums="4f7100d8d144b85a2a4ba176ff595e0524b464e47f80953aa668bc61b09bdbc717e1a17b3fd8b8ee8e4245781a3a73c21ae8702b99e25cd0f55a946c5ac17c23  openal-soft-1.17.2.tar.gz"
