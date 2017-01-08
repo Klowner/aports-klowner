@@ -8,6 +8,7 @@ url="http://cairographics.org/pycairo/"
 arch="all"
 license="LGPL3"
 makedepends="python3-dev cairo-dev"
+subpackages="$pkgname-dev"
 _waf_version=1.7.15
 source="http://cairographics.org/releases/pycairo-${pkgver}.tar.bz2
 	https://waf.io/waf-${_waf_version}
