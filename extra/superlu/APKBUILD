@@ -1,0 +1,43 @@
+# Maintainer: Mark Riedesel <mark@klowner.com>
+# Contributor: Mark Riedesel <mark@klowner.com>
+pkgname=superlu
+pkgver=5.2.1
+pkgrel=0
+pkgdesc="Set of subroutines to solve a sparse linear system"
+url="http://crd.lbl.gov/~xiaoye/SuperLU/"
+arch="all"
+license="BSD"
+makedepends="gfortran openblas-dev"
+source="${url}${pkgname}_$pkgver.tar.gz"
+builddir="$srcdir"/SuperLU_$pkgver
+
+build() {
+	cd $builddir
+	cp MAKE_INC/make.linux make.inc
+	mkdir -p shared
+
+	#sed -e 's/lblas/lopenblas/g' -i make.inc
+
+	# Build shared library
+	cd shared
+	make -f ../SRC/Makefile VPATH=../SRC srcdir=../SRC CC=cc \
+		CFLAGS="$CFLAGS -fPIC" FORTRAN=gfortran FFLAGS="$CFLAGS -fPIC" \
+		BLASLIB="-lopenblas" CDEFS="-DAdd_" NOOPTS="-fPIC" \
+		SUPERLULIB=$builddir/lib/lib$pkgname.a
+	gcc -shared -Wl,-soname,lib$pkgname.so.5 -o ../lib/lib$pkgname.so.$pkgver \
+		*o -lopenblas -lm -lgfortran
+}
+
+package() {
+	cd $builddir
+	mkdir -p "$pkgdir"/usr/lib
+	install -p -m755 "$builddir"/lib/lib$pkgname.so.$pkgver "$pkgdir"/usr/lib
+	install -p -m755 "$builddir"/lib/lib$pkgname.a "$pkgdir"/usr/lib
+	cd "$pkgdir"/usr/lib
+	ln -s lib$pkgname.so.$pkgver lib$pkgname.so.5
+	ln -s lib$pkgname.so.5 lib$pkgname.so
+}
+
+md5sums="3a1a9bff20cb06b7d97c46d337504447  superlu_5.2.1.tar.gz"
+sha256sums="28fb66d6107ee66248d5cf508c79de03d0621852a0ddeba7301801d3d859f463  superlu_5.2.1.tar.gz"
+sha512sums="30538b4c2809294b8f34646bce6445944f21a1dffaf3ec0a0f29a55d5261caa56e4279d7722bb95cc9d89450d36ded969617edc82ecce7d0f1dfb24040d80d07  superlu_5.2.1.tar.gz"
