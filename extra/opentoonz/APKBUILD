@@ -1,0 +1,36 @@
+# Maintainer: Mark Riedesel <mark@klowner.com>
+# Contributor: Mark Riedesel <mark@klowner.com>
+pkgname=opentoonz
+pkgver=1.1.2
+pkgrel=0
+pkgdesc="An open-source full-featured 2D animation creation software"
+url="https://opentoonz.github.io/"
+arch="all"
+license="BSD"
+makedepends="cmake tiff-dev qt5-qtbase-dev qt5-qtsvg-dev qt5-qtscript-dev qt5-qttools-dev qt5-qtmultimedia-dev
+	glew-dev lz4-dev lzo-dev libusb-dev sdl2-dev freetype-dev boost-dev freeglut-dev openblas-dev"
+source="$pkgname-$pkgver.tar.gz::https://github.com/opentoonz/opentoonz/archive/v${pkgver}.tar.gz"
+builddir="$srcdir"/$pkgname-$pkgver
+
+build() {
+
+	# make libtiff
+	cd "$builddir"/thirdparty/tiff-4.0.3
+	CFLAGS="-fPIC" ./configure && make
+	cd -
+
+	cd "$builddir"
+	cmake -Htoonz/sources \
+		-B${pkgname}-build \
+		-DCMAKE_BUILD_TYPE:STRING=Release
+	cd "${pkgname}"-build
+	make
+}
+
+package() {
+	echo "package"
+}
+
+md5sums="bf977b209c59a27f1ffad438c93ba4db  opentoonz-1.1.2.tar.gz"
+sha256sums="e9943abbd49befb5c8963fd7cb744b6c5b93a4faa02c8564610b848d189ea029  opentoonz-1.1.2.tar.gz"
+sha512sums="800a741cb40e7dede79ef92705fc8fe3a23524c8a4397c30f80a81a7513c98606fb1bb5574188969ba08cfe8995d679f9fc5ecb696a6ac14c48aa2646a2c871e  opentoonz-1.1.2.tar.gz"
