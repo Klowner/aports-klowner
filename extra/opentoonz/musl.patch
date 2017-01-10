@@ -1,0 +1,29 @@
+diff --git a/toonz/sources/common/tcore/tstopwatch.cpp b/toonz/sources/common/tcore/tstopwatch.cpp
+index 5a993a8a..a8d418c1 100644
+--- a/toonz/sources/common/tcore/tstopwatch.cpp
++++ b/toonz/sources/common/tcore/tstopwatch.cpp
+@@ -8,11 +8,7 @@
+ #include <stdlib.h>
+ #else  //_WIN32
+ 
+-#if defined(__APPLE_CC__)
+ #include <unistd.h>
+-#else
+-#include <sys/unistd.h>
+-#endif
+ #include <limits.h>
+ #include <sys/times.h>
+ #include <sys/types.h>
+diff --git a/toonz/sources/include/tnztypes.h b/toonz/sources/include/tnztypes.h
+index 66a9fc23..2a3729e1 100644
+--- a/toonz/sources/include/tnztypes.h
++++ b/toonz/sources/include/tnztypes.h
+@@ -36,7 +36,7 @@ typedef unsigned __int64_t TUINT64;
+ 
+ #elif defined(LINUX)
+ #include <stdint.h>
+-#define TINT32 __int32_t
++#define TINT32 int32_t
+ typedef uint32_t TUINT32;
+ typedef int64_t TINT64;
+ typedef uint64_t TUINT64;
