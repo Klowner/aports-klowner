@@ -20,6 +20,7 @@ build() {
 	cd "$builddir"
 
 	cp "$srcdir/waf-$_waf_version" ./waf
+	chmod +x ./waf
 
 	# fix compatibility with newer waf
 	# http://cgit.freedesktop.org/pycairo/commit/?id=c57cd129407c904f8c2f752a59d0183df7b01a5e
