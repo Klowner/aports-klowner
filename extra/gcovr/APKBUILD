@@ -2,12 +2,13 @@
 # Maintainer: Mark Riedesel <mark@klowner.com>
 pkgname=gcovr
 pkgver=3.3
-pkgrel=1
+pkgrel=2
 pkgdesc="Python alternative to lcov, capable of generating HTML, text, or XML reports from gcov data"
 arch="noarch"
 url="http://gcovr.com"
 license="BSD"
-makedepends="python2 py-setuptools"
+depends="python2"
+makedepends="$depends py-setuptools"
 source="$pkgname-$pkgver.tar.gz::https://github.com/gcovr/gcovr/archive/${pkgver}.tar.gz"
 
 build() {
