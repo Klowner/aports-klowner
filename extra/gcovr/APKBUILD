@@ -1,3 +1,4 @@
+# Contributor: Mark Riedesel <mark@klowner.com>
 # Maintainer: Mark Riedesel <mark@klowner.com>
 pkgname=gcovr
 pkgver=3.3
@@ -11,13 +12,13 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/gcovr/gcovr/archive/${pkgver
 
 build() {
 	cd "$builddir"
-	python2 setup.py build
+	python2 setup.py build || return 1
 }
 
 package() {
 	cd "$builddir"
-	python2 setup.py install --root="$pkgdir"
-	install -D -m644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.txt
+	python2 setup.py install --root="$pkgdir" || return 1
+	install -D -m644 LICENSE.txt "$pkgdir"/usr/share/licenses/$pkgname/LICENSE.txt || return 1
 }
 
 md5sums="85af705ca6e1187d2bae967d26810c55  gcovr-3.3.tar.gz"
