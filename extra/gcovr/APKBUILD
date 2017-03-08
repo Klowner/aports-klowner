@@ -8,8 +8,8 @@ arch="noarch"
 url="http://gcovr.com"
 license="BSD"
 depends="python2"
-makedepends="$depends py-setuptools"
-source="$pkgname-$pkgver.tar.gz::https://github.com/gcovr/gcovr/archive/${pkgver}.tar.gz"
+makedepends="python2-dev py-setuptools"
+source="${pkgname}-${pkgver}.tar.gz::https://github.com/gcovr/gcovr/archive/${pkgver}.tar.gz"
 
 build() {
 	cd "$builddir"
