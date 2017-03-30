@@ -1,0 +1,32 @@
+# Maintainer: Mark Riedesel <mark@klowner.com>
+# Contributor: Mark Riedesel <mark@klowner.com>
+pkgname=libunrar
+pkgver=5.4.5
+pkgrel=0
+pkgdesc="Library and header file for applications that use libunrar"
+url="http://www.rarlab.com/rar_add.htm"
+arch="all"
+license="MIT"
+makedepends="gcc"
+install=""
+subpackages=""
+source="http://www.rarlab.com/rar/unrarsrc-${pkgver}.tar.gz
+	unrar-soname.patch"
+options="!check"
+builddir="$srcdir"/unrar
+
+build() {
+	cd "$builddir"
+	make lib libversion=${pkgver} CXXFLAGS="-fPIC ${CXXFLAGS}" STRIP="true"
+}
+
+package() {
+	cd "$builddir"
+	mkdir -p "${pkgdir}"/usr/lib
+	install -D -m644 "${builddir}/${pkgname}.so.${pkgver}" "${pkgdir}"/usr/lib/
+	ln -s "${pkgname}.so.${pkgver}" "${pkgdir}/usr/lib/${pkgname}.so.${pkgver%.*}"
+	ln -s "${pkgname}.so.${pkgver%.*}" "${pkgdir}/usr/lib/${pkgname}.so"
+}
+
+sha512sums="ba2abf11638b5ee026cb9e0c3576c94376a01ab3c5411b9bd0e8116d64879c81e76df16f98d850f0f0f5387dda046f38be64ddfb4fe57431cc4d97066d6e3c2f  unrarsrc-5.4.5.tar.gz
+1f4205879e5f6cf86313087c6ea9de70a1150732612e4831bb4f4f35d722d1f58c329551c8f9438703e77c5c1cbcd1ef738759ff11fc6939b2f8cc222713d0e8  unrar-soname.patch"
