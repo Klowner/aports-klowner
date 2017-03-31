@@ -4,13 +4,14 @@ before_script:
   - '.gitlab-ci/prep-env'
 
   # Install openssh-client if ssh-agent is unavailable
-  - which ssh-agent || (apk update && apk add openssh-client)
+  - which ssh-agent || (apk add --no-cache openssh-client)
 
   # Run ssh-agent inside build environment
   - eval $(ssh-agent -s)
 
   # Add the SSH key for rsyncing
   - echo "$SSH_PRIVATE_KEY" | ssh-add -
+
   # Disable host key checking, because that's smart
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
