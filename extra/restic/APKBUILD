@@ -1,0 +1,29 @@
+# Contributor: Mark Riedesel <mark@klowner.com>
+# Maintainer: Mark Riedesel <mark@klowner.com>
+pkgname=restic
+pkgver=0.7.3
+pkgrel=0
+pkgdesc="restic is a backup program that is fast, efficient and secure."
+url="https://github.com/restic/restic"
+arch="all"
+license="BSD"
+makedepends="go"
+source="https://github.com/restic/${pkgname}/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
+builddir="$srcdir/${pkgname}-${pkgver}"
+
+build() {
+	cd "$builddir"
+	make
+}
+
+package() {
+	cd "$builddir"
+	install -d "$pkgdir"/usr/bin
+	install -m755 restic "$pkgdir"/usr/bin
+}
+
+check() {
+	cd "$builddir"
+	./restic version | grep "${pkgver}" || return 1
+}
+sha512sums="2d44b4fc363c7f6389c1f06469cf30ebeff4d6ade0bd4fcae1d7d9def3922936b45043b04f4072284b773df2c6487c58db6aea41c7de5c8184ca33ca3c44d44a  restic-0.7.3.tar.gz"
