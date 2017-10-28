@@ -18,8 +18,7 @@ build() {
 
 package() {
 	cd "$builddir"
-	install -d "$pkgdir"/usr/bin
-	install -m755 restic "$pkgdir"/usr/bin
+	install -Dm755 restic "$pkgdir"/usr/bin/restic
 }
 
 check() {
